@@ -3,7 +3,8 @@ from flask import render_template, url_for
 
 @app.route('/')
 def homepage():
-    return render_template('index.html')
+    usuario = 'Fulaninho'
+    return render_template('index.html', usuario=usuario)
 
 @app.route('/about')
 def about():
