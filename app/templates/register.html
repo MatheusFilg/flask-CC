@@ -2,33 +2,25 @@
 
 {% block content %}
 <div class="container">
-    {% include 'nav.html' %}
-    
-
-    {% if current_user.is_authenticated %}
-
-    <span class="btn btn-primary">{{ current_user.name }}</span>
-    <a href="{{url_for('logout')}}" class="btn btn-danger">Logout</a>
-
-    {% else %}
-
+    <div class="row">
+        <h3>Registro</h3>
+    </div>
     <form action="" method="post" class="row mt-4 gap-2 rounded shadow border p-4">
-        <h3>Login</h3>
-        
         {{ form.csrf_token }}
+
+        {{ form.name.label() }}
+        {{ form.name(class="form-control") }}
+
         {{ form.email.label() }}
         {{ form.email(class="form-control") }}
 
         {{ form.password.label() }}
         {{ form.password(class="form-control") }}
+           
+        {{ form.confirm_password.label() }}
+        {{ form.confirm_password(class="form-control") }}
 
         {{ form.btn_submit(class="btn btn-primary col-12") }}
-
-        Não tem cadastro?     <a href="{{url_for('register')}}">Register</a>
     </form>
-
-    {% endif %}
-    
-
 </div>
 {% endblock %}
