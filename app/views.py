@@ -19,6 +19,11 @@ def contact():
     
     return render_template('contact.html', context=context, form=form)
 
+@app.route('/contact/<int:id>/')
+def contact_detail(id):
+    obj = Contato.query.get(id)
+
+    return render_template('contact_detail.html', obj=obj)
 
 @app.route('/contact/list/')
 def contact_list():

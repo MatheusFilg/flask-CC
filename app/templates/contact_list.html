@@ -22,6 +22,7 @@
                         <th>Nome</th>
                         <th>Email</th>
                         <th>Assunto</th>
+                        <th>Detalhe</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,6 +31,7 @@
                         <td>{{item.name}}</td>
                         <td>{{item.email}}</td>
                         <td>{{item.subject}}</td>
+                        <td><a href="{{url_for('contact_detail', id=item.id)}}">Link</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>
