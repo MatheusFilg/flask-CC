@@ -5,11 +5,14 @@
     <div class="row">
         <h3>Novo Post</h3>
     </div>
-    <form action="" method="post" class="row mt-4 gap-2 rounded shadow border p-4">
+    <form action="" method="post" class="row mt-4 gap-2 rounded shadow border p-4" enctype="multipart/form-data">
         {{ form.csrf_token }}
 
         {{ form.message.label() }}
         {{ form.message(class="form-control") }}
+
+        {{ form.image.label() }}
+        {{ form.image(class="form-control")}}
 
         {{ form.btn_submit(class="btn btn-primary col-12") }}
     </form>

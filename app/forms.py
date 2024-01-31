@@ -1,8 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField, FileField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
+
 from app.models import Contato, User, Post, Comment
-from app import db, bcrypt
+from app import db, bcrypt, app
+
+import os
+from werkzeug.utils import secure_filename
 
 class ContactForm(FlaskForm):
     name= StringField('name', validators=[DataRequired()])
@@ -60,14 +64,25 @@ class LoginForm(FlaskForm):
         
 class PostForm(FlaskForm):
     message = StringField('Message', validators=[DataRequired()])
+    image = FileField('Image', validators=[DataRequired()])
     btn_submit= SubmitField('submit')
 
     def save_post(self, user_id):
+        image = self.image.data
+        secure_name = secure_filename(image.filename)
         post = Post (
             message=self.message.data,
-            user_id=user_id
+            user_id=user_id,
+            image= secure_name
         )
 
+        path = os.path.join(
+            os.path.abspath(os.path.dirname(__file__)),
+            app.config['UPLOAD_FILES'],
+            'post',
+            secure_name
+        )
+        image.save(path)
         db.session.add(post)
         db.session.commit()
 

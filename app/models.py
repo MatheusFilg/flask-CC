@@ -27,6 +27,7 @@ class Post(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
     message = db.Column(db.String, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    image= db.Column(db.String, nullable=True, default='default.png')
     comment = db.relationship('Comment', backref='post', lazy=True)
 
     def msg_resume(self):
