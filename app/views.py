@@ -16,6 +16,7 @@ def homepage():
     return render_template('index.html', usuario=usuario, form=form)
 
 @app.route('/contact', methods=['GET', 'POST'])
+@login_required
 def contact():
     form = ContactForm()
     context = {}
@@ -26,12 +27,14 @@ def contact():
     return render_template('contact.html', context=context, form=form)
 
 @app.route('/contact/<int:id>/')
+@login_required
 def contact_detail(id):
     obj = Contato.query.get(id)
 
     return render_template('contact_detail.html', obj=obj)
 
 @app.route('/contact/list/')
+@login_required
 def contact_list():
 
     if request.method == 'GET':
@@ -54,11 +57,13 @@ def register():
     return render_template('register.html', form=form)
 
 @app.route('/logout/')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('homepage'))
 
 @app.route('/post/new/', methods=['GET','POST'])
+@login_required
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
@@ -67,12 +72,13 @@ def new_post():
     return render_template('new_post.html', form=form)
 
 @app.route('/post/list',methods=['GET','POST'])
+@login_required
 def post_list():
     posts = Post.query.all()
     return render_template('post_list.html', posts=posts)
 
-
 @app.route('/post/<int:id>',methods=['GET','POST'])
+@login_required
 def post(id):
     post = Post.query.get(id)
     form = CommentForm()
