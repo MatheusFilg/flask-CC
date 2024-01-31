@@ -1,9 +1,9 @@
 from app import app, db
 from flask import render_template, url_for, request, redirect
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
 
-from app.models import Contato
-from app.forms import ContactForm, UserForm, LoginForm
+from app.models import Contato, Post
+from app.forms import ContactForm, UserForm, LoginForm, PostForm, CommentForm
 
 @app.route('/', methods=['GET','POST'])
 def homepage():
@@ -57,3 +57,26 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('homepage'))
+
+@app.route('/post/new/', methods=['GET','POST'])
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        form.save_post(current_user.id)
+        return redirect(url_for('homepage'))
+    return render_template('new_post.html', form=form)
+
+@app.route('/post/list',methods=['GET','POST'])
+def post_list():
+    posts = Post.query.all()
+    return render_template('post_list.html', posts=posts)
+
+
+@app.route('/post/<int:id>',methods=['GET','POST'])
+def post(id):
+    post = Post.query.get(id)
+    form = CommentForm()
+    if form.validate_on_submit():
+        form.save_post(current_user.id, post.id)
+        return redirect(url_for('post', id=id))
+    return render_template('post.html', post=post, form=form)

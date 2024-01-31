@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
-from app.models import Contato, User
+from app.models import Contato, User, Post, Comment
 from app import db, bcrypt
 
 class ContactForm(FlaskForm):
@@ -57,3 +57,30 @@ class LoginForm(FlaskForm):
                 raise Exception('Wrong Password')
         else:
             raise Exception('User not found')
+        
+class PostForm(FlaskForm):
+    message = StringField('Message', validators=[DataRequired()])
+    btn_submit= SubmitField('submit')
+
+    def save_post(self, user_id):
+        post = Post (
+            message=self.message.data,
+            user_id=user_id
+        )
+
+        db.session.add(post)
+        db.session.commit()
+
+class CommentForm(FlaskForm):
+    comment = StringField('Comentários', validators=[DataRequired()])
+    btn_submit= SubmitField('submit')
+
+    def save_post(self, user_id, post_id):
+        comment = Comment (
+            comment=self.comment.data,
+            user_id=user_id,
+            post_id=post_id
+        )
+
+        db.session.add(comment)
+        db.session.commit()

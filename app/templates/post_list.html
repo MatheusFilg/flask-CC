@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-4">
+        {% include 'nav.html' %}
+
+        <h3>Lista de Posts</h3>
+
+        <div class="col-12 mt-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Post</th>
+                        <th>User</th>
+                        <th>Detalhes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in posts %}
+                    <tr>
+                        <td>{{item.msg_resume()}}</td>
+                        <td>{{item.user.name}}</td>
+                        <td><a href="{{url_for('post', id=item.id)}}">...</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
